@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>UC TRACKER</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Olá agente CGB!</h1>
+    <form method="POST" action="/pesquisar">
+        <label for="uc_pesquisa">Digite a UC a ser pesquisada:</label>
+        <input type="text" id="uc_pesquisa" name="uc_pesquisa">
+        <input type="submit" value="Pesquisar">
+    </form>
+    <div>
+        <div>
+            <h2>Resultado da pesquisa:</h2>
+            {% if resultado %}
+            <p>Coordenadas: <a href="https://www.google.com/maps/search/?q={{ resultado }}" target="_blank">{{ resultado
+                    }}</a></p>
+            {% else %}
+            <p>Nenhum resultado encontrado.</p>
+            {% endif %}
+        </div>
+        <html>
+
+        <head>
+            <title>Mapa Interativo</title>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        </head>
+
+        <body>
+            <div id="map" style="width: 800px; height: 600px;"></div>
+            <script>
+                // Crie um mapa Leaflet e defina sua visualização inicial
+                var map = L.map('map').setView([51.505, -0.09], 13);
+                // Adicione uma camada de mapa base (por exemplo, OpenStreetMap)
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                // Exemplo de marcador (você pode adicionar marcadores de pesquisa aqui)
+                var marker = L.marker([{{ resultado }}]).addTo(map);
+                // Exemplo de pop-up para o marcador
+                marker.bindPopup("<b>Alvo Encontrado</b><br>Este é o alvo da pesquisa.").openPopup();
+                
+            </script>
+        </body>
+
+        </html>
+
+    </div>
+</body>
+
+</html>
